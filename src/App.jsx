@@ -13,12 +13,12 @@ function App() {
         orthographic
         camera={{
           position: [0, 0, 1500],
-          zoom: 0.5,
+          zoom: 1,
           near: 0.1,
           far: 10000,
         }}
       >
-        <OrbitControls />
+        <OrbitControls enableRotate={false} enablePan={false} />
         <PosterPlane />
       </Canvas>
     </>

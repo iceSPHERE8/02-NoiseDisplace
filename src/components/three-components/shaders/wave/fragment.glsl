@@ -2,6 +2,8 @@ uniform sampler2D uTexture;
 uniform float uTime;
 uniform vec2 uScale;
 uniform float uStrength;
+uniform float uOffset;
+uniform float uNoise;
 
 varying vec2 vUv;
 
@@ -9,11 +11,11 @@ varying vec2 vUv;
 #include "../voronoi2D.glsl"
 
 void main() {
-    vec2 voroiPara = vec2((cnoise(vec2(vUv.x * uScale.x, vUv.y * uScale.y)) + uTime * 0.1), cnoise(vUv));
-    vec2 displace = cellular(voroiPara * 2.0);
+    vec2 voroiPara = vec2((cnoise(vec2(vUv.x * uScale.x * 0.5, vUv.y * uScale.y * 0.5)) + uTime * 0.1 + uOffset), cnoise(vUv));
+    vec2 displace = cellular(voroiPara * uNoise);
 
-    displace.x = smoothstep(0.3, 1.0, displace.x);
-    displace.y = smoothstep(0.3, 1.0, displace.y);
+    displace.x = smoothstep(0.2, 0.8, displace.x);
+    displace.y = smoothstep(0.2, 0.8, displace.y);
     vec2 newUv = vec2(vUv.x, vUv.y + displace.y * uStrength);
 
     newUv = mix(vUv, newUv, displace.x);
@@ -32,7 +34,6 @@ void main() {
     newUv = mix(newUv, vUv, edge);
 
     vec3 color = texture2D(uTexture, newUv).rgb;
-    // vec3 color = vec3(edge);
 
     gl_FragColor = vec4(color, 1.0);
 }
