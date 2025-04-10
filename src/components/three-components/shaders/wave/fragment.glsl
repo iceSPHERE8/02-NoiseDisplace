@@ -29,7 +29,7 @@ void main() {
     float newBorderY = clamp(pow(1.0 - vUv.y, 10.0) + 0.2, 0.0, 1.0);
 
     float edge = border.x + border.y + newBorderX + newBorderY;
-    edge = smoothstep(0.8, 2.0, edge);
+    edge = smoothstep(0.8, 1.75, edge);
     
     newUv = mix(newUv, vUv, edge);
 
